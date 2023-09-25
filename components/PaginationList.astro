@@ -1,0 +1,27 @@
+---
+import { CollectionEntry } from 'astro:content';
+import Card from "../components/Card";
+
+export interface Props {
+  page: CollectionEntry<"any">[];
+  title: string;
+  entryType: string;
+}
+
+const { page, title, entryType } = Astro.props;
+
+---
+
+<ul>
+    {page.data.map(({ slug, data }) => <Card
+    href={`/${entryType}/${slug}`}
+    frontmatter={data}
+    secHeading={false}
+  />)}
+  </ul>
+  <div class="text-center">
+  {page.url.prev ? <a href={page.url.prev}>Previous</a> : null} {(page.url.prev && page.url.next) ? <span> ~ </span> : null}
+  {page.url.next ? <a href={page.url.next}>Next</a> : null}
+  <p>Page {page.currentPage} of {page.lastPage}</p>
+  <p>{page.total} entries (on this page: entries {page.start+1} to {page.end+1})</p>
+  </div>

@@ -1,0 +1,51 @@
+---
+import { SITE } from "@config";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import LinkButton from "../components/LinkButton.astro";
+---
+
+<style>
+@font-face {
+  font-family: "JacksCandlestick";
+  src: url('/fonts/jcandlestickrotal.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+</style>
+
+<SiteLayout title={`404: Not Found`}>
+
+  <main id="main-content">
+    <div class="not-found-wrapper">
+      <h1 aria-label="404 Not Found">404%!! I USED TO FIND A PAGE</h1>
+      <p>page not found</p>
+      <span aria-hidden="true">( 0 _ 0 )</span>
+      <LinkButton
+        href="/"
+        className="my-6 underline decoration-dashed underline-offset-4 text-lg"
+      >
+        back to spawn
+      </LinkButton>
+    </div>
+  </main>
+
+</SiteLayout>
+
+<style>
+  #main-content {
+    @apply mx-auto flex max-w-3xl flex-1 items-center justify-center;
+  }
+  .not-found-wrapper {
+    @apply mb-14 flex flex-col items-center justify-center;
+  }
+  .not-found-wrapper h1 {
+    @apply text-9xl font-bold text-skin-accent;
+    font-family: 'JacksCandlestick', sans-serif;
+    color: #FFFF6F;
+  }
+  .not-found-wrapper p {
+    @apply mt-4 text-2xl sm:text-3xl;
+    color: #FFFF6F;
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+import Hr from "../components/Hr.astro";
+import PageTop from "../components/PageTop.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { type CollectionEntry } from "astro:content";
+import TableOfContentsSidebar from "../components/TableOfContentsSidebar.astro";
+
+export interface Props {
+  page: CollectionEntry<"meta">;
+}
+
+const { page } = Astro.props;
+
+const { title, tags } = page.data;
+
+const { Content, headings } = await page.render();
+---
+
+<SiteLayout title={title} hideTop={true}>
+  <PageTop title={title} tags={tags} />
+
+  <main>
+    <article
+    id="article"
+    role="article"
+    class="prose text-lg mx-auto mt-8 max-w-3xl"
+  >
+    <Content />
+  </article>
+  </main>
+</SiteLayout>
+
+<TableOfContentsSidebar title={title} headings={headings} />

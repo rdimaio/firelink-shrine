@@ -1,0 +1,29 @@
+---
+import type { MarkdownHeading } from "astro";
+export interface Props {
+  title: string;
+  headings: MarkdownHeading[];
+}
+
+const { title, headings } = Astro.props;
+---
+
+{headings.length > 0 && // Only display a TOC sidebar if there are any headings
+
+<div class="sidebar">
+  <div><a href="#"><h1>Contents</h1></a></div>
+  <ul>
+    {
+      headings.map(heading => {
+        return (
+          <a href={`#${heading.slug}`}>
+            <li>
+              {"\u00a0".repeat(heading.depth * 3 - 3)}&#x2022; {heading.text}
+            </li>
+          </a>
+        );
+      })
+    }
+  </ul>
+</div>
+}

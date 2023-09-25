@@ -1,0 +1,26 @@
+---
+import { type CollectionEntry } from "astro:content";
+import Card from "../components/Card";
+
+
+export interface Props {
+    sectionName: string;
+    entryType: string;
+    pages: CollectionEntry<"any">[];
+}
+
+const { sectionName, entryType, pages } = Astro.props;
+
+---
+
+{pages.length !== 0 && (
+<>
+  <h3 class="pt-8">{sectionName}</h3>
+  <ul class="my-1">
+    {pages.map(({ slug, data }) => (
+      <Card href={`/${entryType}/${slug}`} frontmatter={data} />
+    ))}
+  </ul>
+</>
+)
+}

@@ -1,0 +1,40 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import SortedMusicList from "../components/SortedMusicList";
+import ArtistSidebar from "../components/ArtistSidebar";
+import SiteLayout from "./SiteLayout.astro";
+import { Hr } from "../components";
+import { Image } from "astro:assets";
+
+export interface Props {
+  artist: CollectionEntry<"artists">;
+  entryType: "releases" | "tracks";
+}
+
+const { artist, entryType } = Astro.props;
+
+const title = artist.data.title + ": " + entryType;
+
+const tracks = await getCollection(
+  "tracks",
+  ({ data }) => data.publish && data.artists[0].slug.includes(artist.slug)
+);
+const releases = await getCollection(
+  "releases",
+  ({ data }) => data.publish && data.artists[0].slug.includes(artist.slug)
+);
+
+---
+
+<SiteLayout title={title}>
+    <main>
+      {artist.data.img && <a href={`/music/${artist.slug}`}><Image src={artist.data.img} alt={artist.data.imgAlt} /></a> <div><Hr noPadding={true}/></div>}
+      {releases &&
+<SortedMusicList
+entries={entryType == "releases" ? releases : tracks}
+entryType={entryType}
+></SortedMusicList>
+      }
+</main>
+<ArtistSidebar artist={artist.slug} tracks={tracks} releases={releases} />
+</SiteLayout>

@@ -1,0 +1,42 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import PageTop from "../components/PageTop.astro";
+import SiteLayout from "./SiteLayout.astro";
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  page: CollectionEntry<"gear">;
+}
+
+const { page } = Astro.props;
+
+const { title, description, tags, started } = page.data;
+
+const { Content } = await page.render();
+---
+
+<SiteLayout title={title} description={description} hideTop={true}>
+    <PageTop
+      title={title}
+      tags={tags}
+      published={started}
+      publishedPrefix="Obtained: "
+    />
+  <div class="mx-auto flex w-full max-w-3xl justify-start px-2"></div>
+  <main id="main-content">
+    <article
+      id="article"
+      role="article"
+      class="prose text-lg mx-auto mt-8 max-w-3xl"
+    >
+      <Content />
+    </article>
+  </main>
+</SiteLayout>
+
+<style>
+  main {
+    @apply mx-auto w-full max-w-3xl pb-12;
+  }
+</style>

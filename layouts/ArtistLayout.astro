@@ -1,0 +1,87 @@
+---
+import { getCollection, getEntry, type CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import ArtistSidebar from "../components/ArtistSidebar";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { Hr } from "../components";
+
+export interface Props {
+  page: CollectionEntry<"artist">;
+}
+
+const { page } = Astro.props;
+
+const { title, description, tags, started, img, imgAlt } = page.data;
+
+if (page === undefined) {
+  throw new Error("Artist is required");
+}
+
+const tracks = await getCollection(
+  "tracks",
+  ({ data }) => data.publish && data.artists[0].slug.includes(page.slug)
+);
+const releases = await getCollection(
+  "releases",
+  ({ data }) => data.publish && data.artists[0].slug.includes(page.slug)
+);
+;
+const { Content } = await page.render();
+---
+
+<SiteLayout title={title}>
+  <main id="main-content">
+    {img && <Image src={img} alt={imgAlt} /> <div><Hr noPadding={true}/></div>}
+
+  <article
+  id="article"
+  role="article"
+  class="prose text-lg mx-auto mt-8 max-w-3xl"
+>
+  <Content />
+</article>
+</main>
+ {page ? <ArtistSidebar artist={page.slug} tracks={tracks} releases={releases} /> : "loading"}
+</SiteLayout>
+
+<style>
+  /* ===== Hero Section ===== */
+  #hero {
+    @apply pt-8 pb-6;
+  }
+  #hero h1 {
+    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
+  }
+  #hero .rss-link {
+    @apply mb-6;
+  }
+  #hero .rss-icon {
+    @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
+  }
+  #hero p {
+    @apply my-2;
+  }
+  .social-wrapper {
+    @apply mt-4 flex flex-col sm:flex-row sm:items-center;
+  }
+  .social-links {
+    @apply mr-2 mb-1 whitespace-nowrap sm:mb-0;
+  }
+
+  /* ===== Featured & Recent Posts Sections ===== */
+  #featured,
+  #projects,
+  #latest-projects,
+  #recent-posts {
+    @apply pt-12 pb-6;
+  }
+  #featured h2,
+  #projects h2,
+  #latest-projects h2,
+  #recent-posts h2 {
+    @apply text-2xl font-semibold tracking-wide;
+  }
+  .all-posts-btn-wrapper {
+    @apply my-8 text-center;
+  }
+</style>

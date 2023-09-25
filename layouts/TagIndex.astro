@@ -1,0 +1,35 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { Tag } from "../components";
+
+export interface Props {
+  tagsWithUsages: Map<string, number>;
+}
+
+const { tagsWithUsages } = Astro.props;
+
+---
+
+
+<SiteLayout title={`Tags`}>
+    <main>
+    <article
+    id="article"
+    role="article"
+    class="prose text-lg mx-auto mt-8 max-w-3xl"
+  >
+      <ul class="list-disc">
+        {
+          [...tagsWithUsages.entries()].map(([key, value]) => {
+            return (
+              <li>
+                <Tag name={key} size="lg" />: {value} entries
+              </li>
+            );
+          })
+        }
+      </ul>
+    </article>
+      </main>
+  </SiteLayout>
+  

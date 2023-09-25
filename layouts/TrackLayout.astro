@@ -1,0 +1,89 @@
+---
+import ArtistSidebar from "../components/ArtistSidebar";
+import Hr from "../components/Hr.astro";
+import PageTop from "../components/PageTop.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { Image } from "astro:assets";
+import { getCollection, type CollectionEntry, getEntry, getEntries } from "astro:content";
+
+export interface Props {
+  page: CollectionEntry<"tracks">;
+}
+
+const { page } = Astro.props;
+
+const artist = page.data.artists[0].slug;
+
+const artistEntry = await getEntry("artists", artist);
+
+const { title, artists, tags, cover, coverAlt, published, meidcode, gear, links } =
+  page.data;
+
+const { Content } = await page.render();
+
+const tracks = await getCollection(
+  "tracks",
+  ({ data }) => data.publish && data.artists[0].slug.includes(artist)
+);
+const releases = await getCollection(
+  "releases",
+  ({ data }) => data.publish && data.artists[0].slug.includes(artist)
+);
+
+let gearEntries: CollectionEntry<"gear">[] = [];
+
+if (gear !== undefined) {
+  gearEntries = await getEntries(gear);
+}
+---
+
+<SiteLayout title={title} hideTop={true}>
+  <PageTop
+    title={title}
+    published={published}
+    publishedPrefix="Released: "
+    code={meidcode}
+    codePrefix="MEID"
+    tags={tags}
+  />
+  <main id="main-content">
+    {artistEntry.data.img && <a href={`/music/${artistEntry.slug}`}><Image src={artistEntry.data.img} alt={artistEntry.data.imgAlt} /></a> <div><Hr noPadding={true}/></div>}
+    <article
+      id="article"
+      role="article"
+      class="prose text-lg mx-auto mt-8 max-w-3xl items-start"
+    >
+    {
+      cover && (
+        <Image
+          src={cover}
+          alt={coverAlt}
+          width="300"
+          height="300"
+          class="float-left mr-5 mb-2"
+        />
+      )
+    } 
+      <Content />
+      {links && 
+      <div><a href="#links" class="no-underline"><h2>Links</h2></a> <ul>
+      {links.map(link => (
+        <li><a href={link}>{(new URL(link)).hostname}</a></li>
+      ))}</ul></div>}
+
+      {gear && 
+        <div><a href="#gear" class="no-underline"><h2>Gear used</h2></a> <ul>
+        {gearEntries.map(gearEntry => (
+          <li><a href={`/gear/${gearEntry.slug}`}>{gearEntry.data.title}</a></li>
+        ))}</ul></div>}
+
+    </article>
+  </main>
+  <ArtistSidebar artist={artistEntry.slug} tracks={tracks} releases={releases} />
+</SiteLayout>
+
+<style>
+  main {
+    @apply mx-auto w-full max-w-3xl pb-12;
+  }
+</style>

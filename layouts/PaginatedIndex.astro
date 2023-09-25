@@ -1,0 +1,41 @@
+---
+import { CollectionEntry } from 'astro:content';
+import { SITE } from "@config";
+import Card from "../components/Card";
+import SiteLayout from "./SiteLayout.astro";
+import PaginationList from "../components/PaginationList.astro";
+import { Hr } from '../components';
+
+export interface Props {
+  page: CollectionEntry<"any">[];
+  featuredPages: CollectionEntry<"any">[];
+  title: string;
+  entryType: string;
+}
+
+const { page, title, entryType, featuredPages } = Astro.props;
+---
+{page &&
+<SiteLayout title={`${title} ~ ${SITE.title}`}>
+  <main id="main-content">
+    {featuredPages && <section id="featured">
+      <h2 class="pb-0 pt-15">Featured {entryType == 'tech' ? "projects" : entryType}</h2>
+      <ul>
+        {
+          featuredPages.map(
+            ({ data }) =>
+              (
+                <Card
+                  href={`/${entryType}/${data.slug}`}
+                  frontmatter={data}
+                  secHeading={false}
+                />
+              )
+          )
+        }
+      </ul>
+    </section><Hr noPadding={true}/> <h3 class="pb-0 pt-5">All {entryType == 'tech' ? "projects" : entryType}</h3>}
+    <PaginationList page={page} title={title} entryType={entryType}/>
+  </main>
+</SiteLayout>
+}

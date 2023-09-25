@@ -1,0 +1,56 @@
+---
+// Remove trailing slash if exists
+const currentUrlPath = Astro.url.pathname.replace(/\/+$/g, "");
+
+// Get url array from path
+// eg: /tags/tailwindcss => ['tags', 'tailwindcss']
+const breadcrumbList = currentUrlPath.split("/").slice(1);
+---
+
+<nav class="breadcrumb" aria-label="breadcrumb">
+  <ul>
+    <li>
+      <a href="/">~/</a>
+    </li>
+    {
+      breadcrumbList.map((breadcrumb, index) =>
+        index + 1 === breadcrumbList.length ? (
+          <li>
+            <span class={"lowercase"} aria-current="page">
+              {/* make the last part lowercase in Home > Tags > some-tag */}
+              {breadcrumb}
+            </span>
+          </li>
+        ) : (
+          <li>
+            <a
+              href={"/" + breadcrumbList.slice(0, index + 1).join("/")}
+              class="lowercase"
+            >
+              {breadcrumb}
+              <span aria-hidden="true">/</span>
+            </a>
+          </li>
+        )
+      )
+    }
+  </ul>
+</nav>
+
+<style>
+  .breadcrumb {
+    @apply mx-auto mb-1 w-full max-w-3xl font-mono;
+  }
+  .breadcrumb ul {
+    @apply flex;
+  }
+  .breadcrumb ul li {
+    @apply opacity-70 flex;
+  }
+  .breadcrumb ul li:not(:last-child) a {
+    @apply hover:opacity-100;
+  }
+  a {
+    @apply relative decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1;
+  }
+</style>

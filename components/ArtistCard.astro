@@ -1,0 +1,20 @@
+---
+import { Image } from "astro:assets";
+
+const { artist } = Astro.props;
+---
+
+<li class="my-6">
+  <a
+    href={`/music/${artist.slug}`}
+    class="inline-block text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+  >
+    <div class="flex gap-4 items-start">
+      <h3 class="font-semibold text-lg">{artist.data.title}</h3>{" "}
+    </div>
+    <div class="mt-1 rounded-full p-2 w-32 h-32 shrink-0">
+      {artist.data.icon && <Image src={artist.data.icon} alt={artist.data.iconAlt} />}
+      {(!artist.data.icon && artist.data.img) && <Image src={artist.data.img} alt={artist.data.imgAlt} />}
+    </div>
+  </a>
+</li>

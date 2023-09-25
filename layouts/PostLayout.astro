@@ -1,0 +1,43 @@
+---
+import PageTop from "../components/PageTop.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import type { CollectionEntry } from "astro:content";
+import TableOfContentsSidebar from "../components/TableOfContentsSidebar.astro";
+
+
+export interface Props {
+  page: CollectionEntry<"posts">;
+}
+
+const { page } = Astro.props;
+
+const { title, description, tags, published } = page.data;
+
+const { Content, headings } = await page.render();
+---
+
+<SiteLayout title={title} description={description} hideTop={true}>
+  <PageTop
+    title={title}
+    tags={tags}
+    published={published}
+    publishedPrefix="Published: "
+  />
+  <div class="mx-auto flex w-full max-w-3xl justify-start px-2"></div>
+  <main id="main-content">
+    <article
+      id="article"
+      role="article"
+      class="prose text-lg mx-auto mt-8 max-w-3xl"
+    >
+      <Content />
+    </article>
+  </main>
+</SiteLayout>
+<TableOfContentsSidebar title={title} headings={headings} />
+
+<style>
+  main {
+    @apply mx-auto w-full max-w-3xl pb-12;
+  }
+</style>

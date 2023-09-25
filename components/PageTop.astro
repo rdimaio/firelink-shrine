@@ -1,0 +1,65 @@
+---
+import Breadcrumbs from "./Breadcrumbs.astro";
+import Datetime from "./Datetime";
+import Hr from "./Hr.astro";
+import Tag from "./Tag.astro";
+
+export interface Props {
+  title: string;
+  description?: string;
+  tags?: string[];
+  published?: Date;
+  publishedPrefix?:
+    | " "
+    | "Released: "
+    | "Published: "
+    | "Started: "
+    | "Obtained: ";
+  code?: string;
+  codePrefix?: "MEID" | "MAR" | "OHM" | "OCI";
+}
+
+const {
+  title,
+  description,
+  tags,
+  published,
+  publishedPrefix,
+  codePrefix,
+  code,
+} = Astro.props;
+---
+
+<div class="header">
+    <div class="px-5 mx-auto max-w-3xl w-full flex items-center justify-between py-3">
+      <div class="header-element">
+        <h1 class="tracking-wider sm:text-3xl page-title">{title}</h1>
+        {description && { description }}
+        <Breadcrumbs />
+      </div>
+      <div class="header-element font-mono">
+        <p class="inline">
+          {publishedPrefix}
+          {published && <Datetime datetime={published} />}
+        </p>
+        <p>{codePrefix}{code}</p>
+        {
+          tags && tags[0] !== "untagged" && (
+            <ul class="tags-container">
+              Tags:
+              {tags.map(tag => (
+                <Tag name={tag} />
+              ))}
+            </ul>
+          )
+        }
+      </div>
+    </div>
+  <Hr />
+</div>
+
+<style>
+  .page-title {
+    @apply text-2xl font-semibold text-skin-accent;
+  }
+</style>

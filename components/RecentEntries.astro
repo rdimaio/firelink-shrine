@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Card from "./Card";
+import { slugify } from "../utils";
+import getSortedEntries from "../utils/getSortedEntries";
+
+export interface Props {
+  entries: CollectionEntry<"any">[];
+}
+
+const { entries } = Astro.props;
+
+const sortedEntries = getSortedEntries(entries);
+
+---
+
+<ul>
+    {
+        sortedEntries.map(
+          ({ data }, index) =>
+            index < 4 && (
+              <Card
+                href={`${slugify(data)}`}
+                frontmatter={data}
+                secHeading={false}
+              />
+            )
+        )
+      }
+</ul>
