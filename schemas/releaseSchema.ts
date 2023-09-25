@@ -4,7 +4,6 @@ import { mainSchema } from "./mainSchema";
 export const releaseSchema = mainSchema
   .extend({
     artists: z.array(reference("artists")).min(1),
-    marcode: z.string(),
     type: z.enum(["album", "single", "ep"]),
     started: z.date().optional(),
     finished: z.date().optional(),

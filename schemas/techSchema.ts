@@ -3,7 +3,6 @@ import { mainSchema } from "./mainSchema";
 
 export const techSchema = mainSchema
   .extend({
-    ohmcode: z.string(),
     started: z.date().optional(),
     finished: z.date().optional(),
     published: z.date(),

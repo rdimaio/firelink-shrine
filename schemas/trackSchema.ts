@@ -4,7 +4,6 @@ import { mainSchema } from "./mainSchema";
 export const trackSchema = mainSchema
   .extend({
     artists: z.array(reference("artists")).min(1),
-    meidcode: z.string(),
     started: z.date().optional(),
     finished: z.date().optional(),
     published: z.date(),

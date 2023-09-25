@@ -5,9 +5,10 @@ export const mainSchema = z
     title: z.string(),
     description: z.string().optional(),
     pageSlug: z.string().optional(),
-    publish: z.boolean().default(true),
+    publish: z.boolean().default(false),
     published: z.date().optional(),
-    tags: z.array(z.string()).default(["untagged"]),
+    tags: z.array(z.string()).optional(),
+    code: z.string().optional(),
   })
   .strict();
 
