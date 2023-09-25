@@ -17,10 +17,10 @@ const sortedEntries = getSortedEntries(entries);
 <ul>
     {
         sortedEntries.map(
-          ({ data }, index) =>
+          ({ data, slug, collection }, index) =>
             index < 4 && (
               <Card
-                href={`${slugify(data)}`}
+                href={`/${collection}/${slug}`}
                 frontmatter={data}
                 secHeading={false}
               />

@@ -16,17 +16,17 @@ export interface Props {
 const { page, title, entryType, featuredPages } = Astro.props;
 ---
 {page &&
-<SiteLayout title={`${title} ~ ${SITE.title}`}>
+<SiteLayout title={`${title}`}>
   <main id="main-content">
     {featuredPages && <section id="featured">
       <h2 class="pb-0 pt-15">Featured {entryType == 'tech' ? "projects" : entryType}</h2>
       <ul>
         {
           featuredPages.map(
-            ({ data }) =>
+            ({ data, slug }) =>
               (
                 <Card
-                  href={`/${entryType}/${data.slug}`}
+                  href={`/${entryType}/${slug}`}
                   frontmatter={data}
                   secHeading={false}
                 />
