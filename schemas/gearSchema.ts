@@ -3,7 +3,6 @@ import { mainSchema } from "./mainSchema";
 
 export const gearSchema = mainSchema
   .extend({
-    nautcode: z.string(),
     status: z.enum(["owned", "sold", "lost"]),
     price: z
       .object({
