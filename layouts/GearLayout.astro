@@ -33,7 +33,7 @@ const { Content } = await page.render();
       class="prose text-lg mx-auto mt-8 max-w-3xl"
     >
       <Content />
-      {usedInPages && <h2>Used in: </h2> <RecentEntries entries={usedInPages}/>}
+      {usedInPages.length > 0 && <h2>Used in: </h2> <RecentEntries entries={usedInPages}/>}
     </article>
   </main>
 </SiteLayout>
