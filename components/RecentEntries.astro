@@ -6,9 +6,13 @@ import getSortedEntries from "../utils/getSortedEntries";
 
 export interface Props {
   entries: CollectionEntry<"any">[];
+  limit?: number;
 }
 
-const { entries } = Astro.props;
+const { entries, limit } = Astro.props;
+
+const cardLimit = limit || 500; // set default limit if not specified
+
 
 const sortedEntries = getSortedEntries(entries);
 
@@ -18,7 +22,7 @@ const sortedEntries = getSortedEntries(entries);
     {
         sortedEntries.map(
           ({ data, slug, collection }, index) =>
-            index < 4 && (
+            index < cardLimit && (
               <Card
                 href={`/${collection}/${slug}`}
                 frontmatter={data}

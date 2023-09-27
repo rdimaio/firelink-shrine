@@ -1,4 +1,5 @@
 ---
+import { RecentEntries } from "../components";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import PageTop from "../components/PageTop.astro";
@@ -7,9 +8,10 @@ import type { CollectionEntry } from "astro:content";
 
 export interface Props {
   page: CollectionEntry<"gear">;
+  usedInPages: CollectionEntry<"any">[];
 }
 
-const { page } = Astro.props;
+const { page, usedInPages } = Astro.props;
 
 const { title, description, tags, started } = page.data;
 
@@ -31,6 +33,7 @@ const { Content } = await page.render();
       class="prose text-lg mx-auto mt-8 max-w-3xl"
     >
       <Content />
+      {usedInPages && <h2>Used in: </h2> <RecentEntries entries={usedInPages}/>}
     </article>
   </main>
 </SiteLayout>
