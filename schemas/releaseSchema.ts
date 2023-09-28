@@ -9,7 +9,6 @@ export const releaseSchema = mainSchema
     finished: z.date().optional(),
     published: z.date(),
     links: z.array(z.string().url()).optional(),
-    image: z.string().optional(),
     tracks: z.array(reference("tracks")).min(1).optional(),
   })
   .strict();
